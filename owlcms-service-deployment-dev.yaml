@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: owlcms-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: owlcms-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: owlcms-dep
+  labels:
+    app: owlcms-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: owlcms-app
+  template:
+    metadata:
+      labels:
+        app: owlcms-app
+    spec:
+      containers:
+      - name: owlcms
+        image: the646project/owlcms:5.8.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: POSTGRES_HOST
+          value: "abcd.compute-1.amazonaws.com"
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_DB
+          value: "db_name"
+        - name: POSTGRES_USER
+          value: "admin"
+        - name: POSTGRES_PASSWORD
+          value: "Abcd@1234"
+        - name: OWLCMS_ARTIFACT_NAME
+          value: "owlcms-digitalocean"
+        - name: REGISTER_API_TOKEN
+          value: "1234XYZ"
+        - name: ADMIN_PASSWORD
+          value: "Test@the646"
+        - name: ACCESS_ALLOW_ORIGIN
+          value: "https://the646project.com"

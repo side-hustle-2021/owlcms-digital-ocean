@@ -1,0 +1,4 @@
+.env.prod
+production-issuer-prod.yaml
+owlcms-service-deployment-prod.yaml
+.DS_Store
